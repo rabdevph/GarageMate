@@ -19,4 +19,8 @@ public class Customer
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime? UpdatedAt { get; set; }
+
+    public IndividualCustomer? IndividualCustomer { get; set; }
+    public CompanyCustomer? CompanyCustomer { get; set; }
+    public List<VehicleOwnership> VehicleOwnerships { get; set; } = [];
 }

@@ -12,6 +12,6 @@ public class VehicleOwnership
 
     public string? Notes { get; set; }
 
-    public Vehicle vehicle { get; set; } = null!;
-    public Customer customer { get; set; } = null!;
+    public Vehicle Vehicle { get; set; } = null!;
+    public Customer Customer { get; set; } = null!;
 }

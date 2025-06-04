@@ -9,4 +9,6 @@ public class CompanyCustomer
     public string? ContactPerson { get; set; }
 
     public string? Position { get; set; }
+
+    public Customer Customer { get; set; } = null!;
 }
