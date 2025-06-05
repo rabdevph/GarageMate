@@ -18,5 +18,5 @@ public class Vehicle
 
     public string? Notes { get; set; }
 
-    public List<VehicleOwnership> Ownerships { get; set; } = [];
+    public List<VehicleOwnership> VehicleOwnerships { get; set; } = [];
 }
