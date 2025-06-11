@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using GarageMate.Api.Data;
+using GarageMate.Api.Endpoints;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,5 +22,7 @@ builder.Services.Configure<JsonOptions>(options =>
 });
 
 var app = builder.Build();
+
+app.MapCustomerEndpoints();
 
 app.Run();
