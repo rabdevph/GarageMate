@@ -1,4 +1,6 @@
+using System.Text.Json.Serialization;
 using GarageMate.Api.Data;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +15,11 @@ var connectionString = $"Host={host};Port={port};Database={db};Username={user};P
 
 builder.Services.AddDbContext<GarageMateContext>(options =>
     options.UseNpgsql(connectionString));
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(null, allowIntegerValues: false));
+});
 
 var app = builder.Build();
-
-app.MapGet("/", () => "Hello GarageMate!");
 
 app.Run();
