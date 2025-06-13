@@ -6,7 +6,7 @@ namespace GarageMate.Api.Mapping;
 
 public static class CustomerMapping
 {
-    public static Customer ToEntity(this CreateCustomerDto dto)
+    public static Customer ToEntity(this CustomerCreateDto dto)
     {
         var customer = new Customer
         {
@@ -49,7 +49,7 @@ public static class CustomerMapping
             Address = customer.Address,
             Notes = customer.Notes,
             Individual = customer.IndividualCustomer is not null
-                ? new IndividualCustomerDto
+                ? new CustomerIndividualDto
                 {
                     FirstName = customer.IndividualCustomer.FirstName,
                     LastName = customer.IndividualCustomer.LastName
@@ -57,7 +57,7 @@ public static class CustomerMapping
                 :
                 null,
             Company = customer.CompanyCustomer is not null
-                ? new CompanyCustomerDto
+                ? new CustomerCompanyDto
                 {
                     CompanyName = customer.CompanyCustomer.CompanyName,
                     ContactPerson = customer.CompanyCustomer.ContactPerson,

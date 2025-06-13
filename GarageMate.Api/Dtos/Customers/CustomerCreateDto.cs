@@ -2,7 +2,7 @@ using GarageMate.Api.Enums;
 
 namespace GarageMate.Api.Dtos.Customers;
 
-public record class CreateCustomerDto
+public record class CustomerCreateDto
 {
     public CustomerType Type { get; init; }
 
@@ -14,6 +14,6 @@ public record class CreateCustomerDto
 
     public string? Notes { get; init; }
 
-    public IndividualCustomerDto? Individual { get; init; }
-    public CompanyCustomerDto? Company { get; init; }
+    public CustomerIndividualDto? Individual { get; init; }
+    public CustomerCompanyDto? Company { get; init; }
 }

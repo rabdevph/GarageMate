@@ -1,6 +1,6 @@
 namespace GarageMate.Api.Dtos.Customers;
 
-public record class CompanyCustomerDto
+public record class CustomerCompanyDto
 {
     public string CompanyName { get; init; } = string.Empty;
 

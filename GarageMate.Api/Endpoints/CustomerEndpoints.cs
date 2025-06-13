@@ -2,7 +2,6 @@ using GarageMate.Api.Data;
 using GarageMate.Api.Dtos.Customers;
 using GarageMate.Api.Enums;
 using GarageMate.Api.Mapping;
-using GarageMate.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GarageMate.Api.Endpoints;
@@ -45,7 +44,7 @@ public static class CustomerEndpoints
         })
         .WithName(GetCustomerEndpointName);
 
-        group.MapPost("/", async (CreateCustomerDto newCustomer, GarageMateContext dbContext) =>
+        group.MapPost("/", async (CustomerCreateDto newCustomer, GarageMateContext dbContext) =>
         {
             if (newCustomer.Type == CustomerType.Individual && newCustomer.Individual is null)
             {
