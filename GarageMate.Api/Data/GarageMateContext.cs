@@ -45,6 +45,10 @@ public class GarageMateContext(DbContextOptions<GarageMateContext> options)
             entity.Property(c => c.Notes)
                 .HasMaxLength(1024);
 
+            entity.Property(c => c.Status)
+                .IsRequired()
+                .HasConversion<string>();
+
             entity.HasOne(c => c.IndividualCustomer)
                 .WithOne(ic => ic.Customer)
                 .HasForeignKey<IndividualCustomer>(ic => ic.CustomerId)
