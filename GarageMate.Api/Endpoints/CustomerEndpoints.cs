@@ -1,7 +1,9 @@
 using GarageMate.Api.Data;
 using GarageMate.Api.Dtos.Customers;
 using GarageMate.Api.Enums;
+using GarageMate.Api.Extensions;
 using GarageMate.Api.Mapping;
+using GarageMate.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GarageMate.Api.Endpoints;
@@ -61,6 +63,21 @@ public static class CustomerEndpoints
 
             var dto = customer.ToCustomerDetailsDto();
             return Results.CreatedAtRoute(GetCustomerEndpointName, new { id = customer.Id }, dto);
+        });
+
+        group.MapPut("/{id}", async (int id, CustomerDetailsUpdateDto updatedCustomer, GarageMateContext dbContext) =>
+        {
+            var customer = await dbContext.Customers
+                .Include(c => c.IndividualCustomer)
+                .Include(c => c.CompanyCustomer)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (customer is null) return Results.NotFound();
+
+            customer.UpdateCustomerDetails(updatedCustomer);
+            await dbContext.SaveChangesAsync();
+
+            return Results.Ok(customer.ToCustomerDetailsDto());
         });
 
         return group;
