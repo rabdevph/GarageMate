@@ -14,26 +14,25 @@ public static class CustomerMapping
             Email = dto.Email,
             PhoneNumber = dto.PhoneNumber,
             Address = dto.Address,
-            Notes = dto.Notes
+            Notes = dto.Notes,
+            IndividualCustomer = dto.Type == CustomerType.Individual && dto.Individual is not null
+                ? new IndividualCustomer
+                {
+                    FirstName = dto.Individual.FirstName,
+                    LastName = dto.Individual.LastName
+                }
+                :
+                null,
+            CompanyCustomer = dto.Type == CustomerType.Company && dto.Company is not null
+                ? new CompanyCustomer
+                {
+                    CompanyName = dto.Company.CompanyName,
+                    ContactPerson = dto.Company.ContactPerson,
+                    Position = dto.Company.Position
+                }
+                :
+                null
         };
-
-        if (dto.Type == CustomerType.Individual && dto.Individual is not null)
-        {
-            customer.IndividualCustomer = new IndividualCustomer
-            {
-                FirstName = dto.Individual.FirstName,
-                LastName = dto.Individual.LastName
-            };
-        }
-        else if (dto.Type == CustomerType.Company && dto.Company is not null)
-        {
-            customer.CompanyCustomer = new CompanyCustomer
-            {
-                CompanyName = dto.Company.CompanyName,
-                ContactPerson = dto.Company.ContactPerson,
-                Position = dto.Company.Position
-            };
-        }
 
         return customer;
     }
