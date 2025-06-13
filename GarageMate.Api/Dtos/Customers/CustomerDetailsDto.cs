@@ -15,6 +15,6 @@ public record class CustomerDetailsDto
 
     public string? Notes { get; init; }
 
-    public IndividualCustomerDto? Individual { get; init; }
-    public CompanyCustomerDto? Company { get; init; }
+    public CustomerIndividualDto? Individual { get; init; }
+    public CustomerCompanyDto? Company { get; init; }
 }
