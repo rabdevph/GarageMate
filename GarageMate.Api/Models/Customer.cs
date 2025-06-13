@@ -16,6 +16,8 @@ public class Customer
 
     public string? Notes { get; set; }
 
+    public CustomerStatus Status { get; set; } = CustomerStatus.Active;
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime? UpdatedAt { get; set; }
