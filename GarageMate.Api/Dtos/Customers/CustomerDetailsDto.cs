@@ -15,6 +15,12 @@ public record class CustomerDetailsDto
 
     public string? Notes { get; init; }
 
+    public CustomerStatus Status { get; init; }
+
+    public DateTime CreatedAt { get; init; }
+
+    public DateTime? UpdatedAt { get; init; }
+
     public CustomerIndividualDto? Individual { get; init; }
     public CustomerCompanyDto? Company { get; init; }
 }
