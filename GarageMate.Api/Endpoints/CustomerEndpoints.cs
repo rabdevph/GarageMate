@@ -80,6 +80,21 @@ public static class CustomerEndpoints
             return Results.Ok(customer.ToCustomerDetailsDto());
         });
 
+        group.MapPatch("/{id}/status", async (int id, CustomerStatusUpdateDto updatedStatus, GarageMateContext dbContext) =>
+        {
+            var customer = await dbContext.Customers
+                .Include(c => c.IndividualCustomer)
+                .Include(c => c.CompanyCustomer)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (customer is null) return Results.NotFound();
+
+            customer.UpdateCustomerStatus(updatedStatus);
+            await dbContext.SaveChangesAsync();
+
+            return Results.Ok(customer.ToCustomerDetailsDto());
+        });
+
         return group;
     }
 }
