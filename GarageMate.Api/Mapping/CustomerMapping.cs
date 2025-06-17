@@ -31,7 +31,8 @@ public static class CustomerMapping
                     Position = dto.Company.Position
                 }
                 :
-                null
+                null,
+            UpdatedAt = DateTime.UtcNow
         };
 
         return customer;
@@ -47,6 +48,7 @@ public static class CustomerMapping
             PhoneNumber = customer.PhoneNumber,
             Address = customer.Address,
             Notes = customer.Notes,
+            Status = customer.Status,
             Individual = customer.IndividualCustomer is not null
                 ? new CustomerIndividualDto
                 {
@@ -63,7 +65,9 @@ public static class CustomerMapping
                     Position = customer.CompanyCustomer.Position
                 }
                 :
-                null
+                null,
+            CreatedAt = customer.CreatedAt,
+            UpdatedAt = customer.UpdatedAt
         };
     }
 }
