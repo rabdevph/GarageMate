@@ -30,5 +30,13 @@ public static class CustomerExtension
             customer.CompanyCustomer.Position = dto.Company.Position;
             customer.IndividualCustomer = null;
         }
+
+        customer.UpdatedAt = DateTime.UtcNow;
+    }
+
+    public static void UpdateCustomerStatus(this Customer customer, CustomerStatusUpdateDto dto)
+    {
+        customer.Status = dto.Status;
+        customer.UpdatedAt = DateTime.UtcNow;
     }
 }
