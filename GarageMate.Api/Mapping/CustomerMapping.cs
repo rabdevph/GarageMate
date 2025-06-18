@@ -32,7 +32,6 @@ public static class CustomerMapping
                 }
                 :
                 null,
-            UpdatedAt = DateTime.UtcNow
         };
 
         return customer;
