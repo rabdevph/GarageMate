@@ -32,9 +32,27 @@ public class ValidationHelper
 
             return ApiProblemHelper.CreateProblem(
                 $"urn:problem-type:duplicate-{kebabFieldName}",
-                $"Duplicate {fieldName}.",
+                $"Duplicate {fieldName}",
                 StatusCodes.Status409Conflict,
                 $"An entry with the same {fieldName} already exists.",
+                request.Path
+             );
+        }
+
+        return null!;
+    }
+
+    public static IResult ValidateNotFound(object? resource, string resourceName, HttpRequest request)
+    {
+        if (resource is null)
+        {
+            var kebabResourceName = resourceName.ToLower().Replace(" ", "-");
+
+            return ApiProblemHelper.CreateProblem(
+                $"urn:problem-type:{kebabResourceName}-not-found",
+                $"{resourceName} Not Found",
+                StatusCodes.Status404NotFound,
+                $"The requested {resourceName.ToLower()} could not be found.",
                 request.Path
              );
         }
