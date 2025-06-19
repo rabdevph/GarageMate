@@ -96,34 +96,44 @@ public static class CustomerEndpoints
             );
         });
 
-        group.MapPut("/{id}", async (int id, CustomerDetailsUpdateDto updatedCustomer, GarageMateContext dbContext) =>
+        group.MapPut("/{id}", async (
+            int id,
+            CustomerDetailsUpdateDto updatedCustomer,
+            GarageMateContext dbContext,
+            HttpContext http) =>
         {
             var customer = await dbContext.Customers
                 .Include(c => c.IndividualCustomer)
                 .Include(c => c.CompanyCustomer)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (customer is null) return Results.NotFound();
+            var validationResult = ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
+            if (validationResult is not null) return validationResult;
 
-            customer.UpdateCustomerDetails(updatedCustomer);
+            customer!.UpdateCustomerDetails(updatedCustomer);
             await dbContext.SaveChangesAsync();
 
-            return Results.Ok(customer.ToCustomerDetailsDto());
+            return Results.Ok(customer!.ToCustomerDetailsDto());
         });
 
-        group.MapPatch("/{id}/status", async (int id, CustomerStatusUpdateDto updatedStatus, GarageMateContext dbContext) =>
+        group.MapPatch("/{id}/status", async (
+            int id,
+            CustomerStatusUpdateDto updatedStatus,
+            GarageMateContext dbContext,
+            HttpContext http) =>
         {
             var customer = await dbContext.Customers
                 .Include(c => c.IndividualCustomer)
                 .Include(c => c.CompanyCustomer)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (customer is null) return Results.NotFound();
+            var validationResult = ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
+            if (validationResult is not null) return validationResult;
 
-            customer.UpdateCustomerStatus(updatedStatus);
+            customer!.UpdateCustomerStatus(updatedStatus);
             await dbContext.SaveChangesAsync();
 
-            return Results.Ok(customer.ToCustomerDetailsDto());
+            return Results.Ok(customer!.ToCustomerDetailsDto());
         });
 
         return group;
