@@ -34,14 +34,15 @@ public static class CustomerEndpoints
             return Results.Ok(result);
         });
 
-        group.MapGet("/{id}", async (int id, GarageMateContext dbContext) =>
+        group.MapGet("/{id}", async (int id, GarageMateContext dbContext, HttpContext http) =>
         {
             var customer = await dbContext.Customers
                 .Include(c => c.IndividualCustomer)
                 .Include(c => c.CompanyCustomer)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (customer is null) return Results.NotFound();
+            var validationResult = ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
+            if (validationResult is not null) return validationResult;
 
             return Results.Ok(customer!.ToCustomerDetailsDto());
         })
