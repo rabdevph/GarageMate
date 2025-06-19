@@ -16,8 +16,13 @@ public static class CustomerEndpoints
     {
         var group = app.MapGroup("api/customers");
 
-        group.MapGet("/", async (CustomerType? type, GarageMateContext dbContext) =>
+        group.MapGet("/", async (CustomerType? type, GarageMateContext dbContext, int page = 1, int pageSize = 5) =>
         {
+            if (page < 1) page = 1;
+            if (pageSize < 1 || pageSize > 100) pageSize = 10;
+
+            var totalCount = await dbContext.Customers.CountAsync();
+
             var query = dbContext.Customers.AsQueryable();
 
             if (type.HasValue)
@@ -26,11 +31,22 @@ public static class CustomerEndpoints
             }
 
             var customers = await query
+                .OrderBy(c => c.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .Include(c => c.IndividualCustomer)
                 .Include(c => c.CompanyCustomer)
+                .Select(c => c.ToCustomerDetailsDto())
                 .ToListAsync();
 
-            var result = customers.Select(c => c.ToCustomerDetailsDto());
+            var result = new CustomerPaginatedResultDto<CustomerDetailsDto>
+            {
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                Items = customers
+            };
+
             return Results.Ok(result);
         });
 
