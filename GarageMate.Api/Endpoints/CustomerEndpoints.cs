@@ -126,6 +126,9 @@ public static class CustomerEndpoints
             var validationResult = ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
             if (validationResult is not null) return validationResult;
 
+            validationResult = ValidationHelper.ValidateDto(updatedCustomer, http.Request);
+            if (validationResult is not null) return validationResult;
+
             customer!.UpdateCustomerDetails(updatedCustomer);
             await dbContext.SaveChangesAsync();
 
@@ -144,6 +147,9 @@ public static class CustomerEndpoints
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             var validationResult = ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
+            if (validationResult is not null) return validationResult;
+
+            validationResult = ValidationHelper.ValidateDto(updatedStatus, http.Request);
             if (validationResult is not null) return validationResult;
 
             customer!.UpdateCustomerStatus(updatedStatus);
