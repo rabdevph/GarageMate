@@ -122,6 +122,8 @@ public class GarageMateContext(DbContextOptions<GarageMateContext> options)
     {
         modelBuilder.Entity<Vehicle>(entity =>
         {
+            entity.ToTable("Vehicles");
+
             entity.HasKey(v => v.Id);
 
             entity.Property(v => v.PlateNumber)
