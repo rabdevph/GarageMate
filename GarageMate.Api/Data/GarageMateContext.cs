@@ -10,6 +10,7 @@ public class GarageMateContext(DbContextOptions<GarageMateContext> options)
     public DbSet<IndividualCustomer> IndividualCustomers => Set<IndividualCustomer>();
     public DbSet<CompanyCustomer> CompanyCustomers => Set<CompanyCustomer>();
     public DbSet<VehicleOwnership> VehicleOwnerships => Set<VehicleOwnership>();
+    public DbSet<Vehicle> Vehicles => Set<Vehicle>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,6 +20,7 @@ public class GarageMateContext(DbContextOptions<GarageMateContext> options)
         ConfigureIndividualCustomer(modelBuilder);
         ConfigureCompanyCustomer(modelBuilder);
         ConfigureVehicleOwnership(modelBuilder);
+        ConfigureVehicle(modelBuilder);
     }
 
     private static void ConfigureCustomer(ModelBuilder modelBuilder)
@@ -113,6 +115,33 @@ public class GarageMateContext(DbContextOptions<GarageMateContext> options)
                 .WithMany(c => c.VehicleOwnerships)
                 .HasForeignKey(vo => vo.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
+
+    public static void ConfigureVehicle(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Vehicle>(entity =>
+        {
+            entity.HasKey(v => v.Id);
+
+            entity.Property(v => v.PlateNumber)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            entity.Property(v => v.Make)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(v => v.Model)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(v => v.Year)
+                .IsRequired();
+
+            entity.Property(v => v.Vin)
+                .IsRequired()
+                .HasMaxLength(50);
         });
     }
 }
