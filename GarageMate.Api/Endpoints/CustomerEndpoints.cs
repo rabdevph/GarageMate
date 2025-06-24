@@ -1,10 +1,8 @@
 using GarageMate.Api.Data;
 using GarageMate.Api.Dtos.Customers;
 using GarageMate.Api.Enums;
-using GarageMate.Api.Extensions;
 using GarageMate.Api.Helpers;
 using GarageMate.Api.Mapping;
-using GarageMate.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GarageMate.Api.Endpoints;
@@ -16,7 +14,15 @@ public static class CustomerEndpoints
     {
         var group = app.MapGroup("api/customers");
 
-        group.MapGet("/", async (CustomerType? type, GarageMateContext dbContext, int page = 1, int pageSize = 5) =>
+        /// <summary>
+        /// GET: api/customers
+        /// Retrieves a paginated list of all customers, optionally filtered by customer type (Individual or Company).
+        /// </summary>
+        group.MapGet("/", async (
+            CustomerType? type,
+            GarageMateContext dbContext,
+            int page = 1,
+            int pageSize = 10) =>
         {
             if (page < 1) page = 1;
             if (pageSize < 1 || pageSize > 100) pageSize = 10;
@@ -50,21 +56,38 @@ public static class CustomerEndpoints
             return Results.Ok(result);
         });
 
-        group.MapGet("/{id}", async (int id, GarageMateContext dbContext, HttpContext http) =>
+        /// <summary>
+        /// GET: api/customers/{id}
+        /// Retrieves full details of specific customer by ID.
+        /// Includes individual/company info and owned vehicles.
+        /// </summary>
+        group.MapGet("/{id}", async (
+            int id,
+            bool onlyCurrent,
+            GarageMateContext dbContext,
+            HttpContext http) =>
         {
             var customer = await dbContext.Customers
                 .Include(c => c.IndividualCustomer)
                 .Include(c => c.CompanyCustomer)
+                .Include(c => c.VehicleOwnerships)
+                    .ThenInclude(vo => vo.Vehicle)
                 .FirstOrDefaultAsync(c => c.Id == id);
+            if (customer is null)
+                return ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
 
-            var validationResult = ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
-            if (validationResult is not null) return validationResult;
-
-            return Results.Ok(customer!.ToCustomerDetailsDto());
+            return Results.Ok(customer!.ToCustomerDetailsDto(onlyCurrent));
         })
         .WithName(GetCustomerEndpointName);
 
-        group.MapPost("/", async (CustomerCreateDto newCustomer, GarageMateContext dbContext, HttpContext http) =>
+        /// <summary>
+        /// POST: api/customers
+        /// Creates a new customer (individual or company) with required contact and subtype info.
+        /// </summary>
+        group.MapPost("/", async (
+            CustomerCreateDto newCustomer,
+            GarageMateContext dbContext,
+            HttpContext http) =>
         {
             if (newCustomer.Type == CustomerType.Individual && newCustomer.Individual is null)
             {
@@ -89,11 +112,12 @@ public static class CustomerEndpoints
 
             var contactInfoExists = await dbContext.Customers
                 .AnyAsync(c => c.Email == newCustomer.Email || c.PhoneNumber == newCustomer.PhoneNumber);
-            var validationResult = ValidationHelper.ValidateDuplicateRecord(contactInfoExists, "Contact Detail", http.Request);
-            if (validationResult is not null) return validationResult;
+            if (contactInfoExists)
+                return ValidationHelper.ValidateDuplicateRecord(contactInfoExists, "Contact Detail", http.Request);
 
-            validationResult = ValidationHelper.ValidateDto(newCustomer, http.Request);
-            if (validationResult is not null) return validationResult;
+            var validationResult = ValidationHelper.ValidateDto(newCustomer, http.Request);
+            if (validationResult is not null)
+                return validationResult;
 
             var customer = newCustomer.ToEntity();
             dbContext.Customers.Add(customer);
@@ -112,6 +136,10 @@ public static class CustomerEndpoints
             );
         });
 
+        /// <summary>
+        /// PUT: api/customers/{id}
+        /// Updates the contact and subtype details of an existing customer.
+        /// </summary>
         group.MapPut("/{id}", async (
             int id,
             CustomerDetailsUpdateDto updatedCustomer,
@@ -122,12 +150,12 @@ public static class CustomerEndpoints
                 .Include(c => c.IndividualCustomer)
                 .Include(c => c.CompanyCustomer)
                 .FirstOrDefaultAsync(c => c.Id == id);
+            if (customer is null)
+                return ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
 
-            var validationResult = ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
-            if (validationResult is not null) return validationResult;
-
-            validationResult = ValidationHelper.ValidateDto(updatedCustomer, http.Request);
-            if (validationResult is not null) return validationResult;
+            var validationResult = ValidationHelper.ValidateDto(updatedCustomer, http.Request);
+            if (validationResult is not null)
+                return validationResult;
 
             customer!.UpdateCustomerDetails(updatedCustomer);
             await dbContext.SaveChangesAsync();
@@ -135,6 +163,10 @@ public static class CustomerEndpoints
             return Results.Ok(customer!.ToCustomerDetailsDto());
         });
 
+        /// <summary>
+        /// PATCH: api/customers/{id}/status
+        /// Updates the active/inactive status of a customer.
+        /// </summary>
         group.MapPatch("/{id}/status", async (
             int id,
             CustomerStatusUpdateDto updatedStatus,
@@ -145,12 +177,12 @@ public static class CustomerEndpoints
                 .Include(c => c.IndividualCustomer)
                 .Include(c => c.CompanyCustomer)
                 .FirstOrDefaultAsync(c => c.Id == id);
+            if (customer is null)
+                return ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
 
-            var validationResult = ValidationHelper.ValidateNotFound(customer, "Customer", http.Request);
-            if (validationResult is not null) return validationResult;
-
-            validationResult = ValidationHelper.ValidateDto(updatedStatus, http.Request);
-            if (validationResult is not null) return validationResult;
+            var validationResult = ValidationHelper.ValidateDto(updatedStatus, http.Request);
+            if (validationResult is not null)
+                return validationResult;
 
             customer!.UpdateCustomerStatus(updatedStatus);
             await dbContext.SaveChangesAsync();
