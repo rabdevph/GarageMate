@@ -1,3 +1,4 @@
+using GarageMate.Api.Dtos.Vehicles;
 using GarageMate.Api.Enums;
 
 namespace GarageMate.Api.Dtos.Customers;
@@ -23,4 +24,6 @@ public record class CustomerDetailsDto
 
     public CustomerIndividualDto? Individual { get; init; }
     public CustomerCompanyDto? Company { get; init; }
+
+    public List<VehicleSummaryDto> OwnedVehicles { get; init; } = [];
 }
