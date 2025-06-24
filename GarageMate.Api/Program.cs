@@ -24,5 +24,6 @@ builder.Services.Configure<JsonOptions>(options =>
 var app = builder.Build();
 
 app.MapCustomerEndpoints();
+app.MapVehicleEndpoints();
 
 app.Run();
