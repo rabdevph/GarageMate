@@ -25,5 +25,6 @@ var app = builder.Build();
 
 app.MapCustomerEndpoints();
 app.MapVehicleEndpoints();
+app.MapVehicleOwnershipEndpoints();
 
 app.Run();
