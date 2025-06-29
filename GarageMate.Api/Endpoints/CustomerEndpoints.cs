@@ -24,10 +24,11 @@ public static class CustomerEndpoints
             int page = 1,
             int pageSize = 10) =>
         {
+            // For debuggin only.
+            Console.WriteLine($"🚀 API HIT - Page: {page}, PageSize: {pageSize}, Type: {type?.ToString() ?? "All"}");
+
             if (page < 1) page = 1;
             if (pageSize < 1 || pageSize > 100) pageSize = 10;
-
-            var totalCount = await dbContext.Customers.CountAsync();
 
             var query = dbContext.Customers.AsQueryable();
 
@@ -35,6 +36,9 @@ public static class CustomerEndpoints
             {
                 query = query.Where(c => c.Type == type.Value);
             }
+
+            var totalCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
 
             var customers = await query
                 .OrderBy(c => c.Id)
@@ -50,6 +54,7 @@ public static class CustomerEndpoints
                 Page = page,
                 PageSize = pageSize,
                 TotalCount = totalCount,
+                TotalPages = totalPages,
                 Items = customers
             };
 
