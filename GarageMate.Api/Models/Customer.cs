@@ -1,4 +1,4 @@
-using GarageMate.Api.Enums;
+using GarageMate.Shared.Enums;
 
 namespace GarageMate.Api.Models;
 
