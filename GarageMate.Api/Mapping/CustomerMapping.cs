@@ -1,5 +1,5 @@
-using GarageMate.Api.Dtos.Customers;
-using GarageMate.Api.Dtos.Vehicles;
+using GarageMate.Shared.Dtos.Customers;
+using GarageMate.Shared.Dtos.Vehicles;
 using GarageMate.Shared.Enums;
 using GarageMate.Api.Models;
 

@@ -1,6 +1,6 @@
 using GarageMate.Api.Data;
-using GarageMate.Api.Dtos.Customers;
-using GarageMate.Api.Enums;
+using GarageMate.Shared.Dtos.Customers;
+using GarageMate.Shared.Enums;
 using GarageMate.Api.Helpers;
 using GarageMate.Api.Mapping;
 using Microsoft.EntityFrameworkCore;

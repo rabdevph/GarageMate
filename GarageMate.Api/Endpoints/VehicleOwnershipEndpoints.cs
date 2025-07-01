@@ -1,5 +1,5 @@
 using GarageMate.Api.Data;
-using GarageMate.Api.Dtos.VehicleOwnerships;
+using GarageMate.Shared.Dtos.VehicleOwnerships;
 using GarageMate.Api.Helpers;
 using GarageMate.Api.Mapping;
 using Microsoft.EntityFrameworkCore;

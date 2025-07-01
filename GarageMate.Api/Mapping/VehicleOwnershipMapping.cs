@@ -1,4 +1,4 @@
-using GarageMate.Api.Dtos.VehicleOwnerships;
+using GarageMate.Shared.Dtos.VehicleOwnerships;
 using GarageMate.Api.Models;
 
 namespace GarageMate.Api.Mapping;
