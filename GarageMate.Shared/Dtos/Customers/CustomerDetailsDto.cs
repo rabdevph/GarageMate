@@ -1,7 +1,7 @@
-using GarageMate.Api.Dtos.Vehicles;
-using GarageMate.Api.Enums;
+using GarageMate.Shared.Dtos.Vehicles;
+using GarageMate.Shared.Enums;
 
-namespace GarageMate.Api.Dtos.Customers;
+namespace GarageMate.Shared.Dtos.Customers;
 
 public record class CustomerDetailsDto
 {

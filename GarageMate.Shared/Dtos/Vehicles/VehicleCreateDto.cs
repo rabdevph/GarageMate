@@ -1,22 +1,28 @@
-namespace GarageMate.Api.Dtos.Vehicles;
+using System.ComponentModel.DataAnnotations;
 
-public record class VehicleDetailsDto
+namespace GarageMate.Shared.Dtos.Vehicles;
+
+public record class VehicleCreateDto
 {
-    public int Id { get; init; }
-
+    [Required]
+    [MaxLength(20)]
     public string PlateNumber { get; init; } = string.Empty;
 
+    [Required]
+    [MaxLength(50)]
     public string Make { get; init; } = string.Empty;
 
+    [Required]
+    [MaxLength(50)]
     public string Model { get; init; } = string.Empty;
 
     public int Year { get; init; }
 
     public string? Color { get; init; }
 
+    [Required]
+    [MaxLength(50)]
     public string Vin { get; init; } = string.Empty;
 
     public string? Notes { get; init; }
-
-    public VehicleOwnerDto? CurrentOwner { get; init; }
 }

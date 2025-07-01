@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace GarageMate.Api.Dtos.Vehicles;
+namespace GarageMate.Shared.Dtos.Vehicles;
 
 public record class VehicleDetailsUpdateDto
 {

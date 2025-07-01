@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using GarageMate.Api.Enums;
+using GarageMate.Shared.Enums;
 
-namespace GarageMate.Api.Dtos.Customers;
+namespace GarageMate.Shared.Dtos.Customers;
 
 public record class CustomerCreateDto
 {

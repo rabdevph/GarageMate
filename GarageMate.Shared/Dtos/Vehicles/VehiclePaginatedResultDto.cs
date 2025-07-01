@@ -1,4 +1,4 @@
-namespace GarageMate.Api.Dtos.Vehicles;
+namespace GarageMate.Shared.Dtos.Vehicles;
 
 public record class VehiclePaginatedResultDto<T>
 {

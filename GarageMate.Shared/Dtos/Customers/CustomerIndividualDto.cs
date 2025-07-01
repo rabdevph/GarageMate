@@ -1,4 +1,4 @@
-namespace GarageMate.Api.Dtos.Customers;
+namespace GarageMate.Shared.Dtos.Customers;
 
 public record class CustomerIndividualDto
 {

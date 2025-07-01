@@ -1,4 +1,4 @@
-namespace GarageMate.Api.Dtos.VehicleOwnerships;
+namespace GarageMate.Shared.Dtos.VehicleOwnerships;
 
 public record class VehicleOwnershipStatusUpdateDto
 {
