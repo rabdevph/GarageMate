@@ -1,4 +1,4 @@
-namespace GarageMate.Api.Enums;
+namespace GarageMate.Shared.Enums;
 
 public enum CustomerType
 {
