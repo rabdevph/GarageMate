@@ -1,8 +1,19 @@
-# 🚗 GarageMate API
+# 🚗 GarageMate API (on hold)
 
-GarageMate is a backend system built with **ASP.NET Core Minimal API** using **Entity Framework Core** and **PostgreSQL**, designed to serve as the foundation for managing operations in automotive service shops and garage businesses.
+> I'm currently focusing on a new project, [**DriveOps**](https://github.com/rabdevph/DriveOps), which builds upon many of the ideas from GarageMate with a cleaner architecture and improved design patterns.
 
-## 📦 Current Features
+GarageMate is a backend system built with **ASP.NET Core Minimal API**, **Entity Framework Core**, and **PostgreSQL**, designed to serve as a foundation for managing operations in automotive service shops and garage businesses.
+
+---
+
+### 📌 Looking for the newer version?
+
+Check out my actively developed project:  
+🔗 **[DriveOps GitHub Repository](https://github.com/rabdevph/DriveOps)**
+
+---
+
+## 📦 Current Features (as of last update)
 
 ### 🔹 Customers
 - ✅ Create individual or company customers  
@@ -22,6 +33,8 @@ GarageMate is a backend system built with **ASP.NET Core Minimal API** using **E
 - ✅ Transfer ownership to a new customer  
 - ✅ View individual ownership record  
 
+---
+
 ## 🛠️ Tech Stack
 
 - **Backend Framework**: ASP.NET Core 9 (Minimal API)
@@ -40,12 +53,3 @@ GarageMate.Api/
 ├── Models/                # Entity models
 ├── Enums/                 # Enum definitions
 └── Helpers/               # Validation and shared logic
-```
-
-## 📌 Roadmap
-
-- Add vehicle service history tracking
-- Invoice and billing support
-- Authentication and user roles
-- Advanced filtering and search
-- Blazor WebAssembly frontend
